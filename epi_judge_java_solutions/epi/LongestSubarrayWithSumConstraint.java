@@ -43,6 +43,9 @@ public class LongestSubarrayWithSumConstraint {
       } else { // minCurrSum > k.
         ++a;
       }
+      if (a > b) {
+        b++;
+      }
     }
     return maxLength;
   }
