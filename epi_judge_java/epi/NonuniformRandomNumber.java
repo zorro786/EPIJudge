@@ -5,16 +5,30 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+
 public class NonuniformRandomNumber {
 
   public static int
   nonuniformRandomNumberGeneration(List<Integer> values,
                                    List<Double> probabilities) {
-    // TODO - you fill in here.
-    return 0;
+    List<Double> cp = new ArrayList<>();
+    cp.add(probabilities.get(0));
+    for (int i = 1; i < probabilities.size(); i++) {
+      cp.add(i, cp.get(i-1) + probabilities.get(i));
+    }
+    Random random = new Random();
+    double p = random.nextDouble();
+    int idx = Collections.binarySearch(cp, p);
+    if (idx < 0) {
+      return values.get(Math.abs(idx));
+    } else {
+      return values.get(idx);
+    }
   }
   private static boolean nonuniformRandomNumberGenerationRunner(
       TimedExecutor executor, List<Integer> values, List<Double> probabilities)

@@ -1,9 +1,13 @@
 package epi;
+
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 
+
 import java.util.Collections;
+
 import java.util.List;
+
 public class ApplyPermutation {
 
   public static void applyPermutation(List<Integer> perm, List<Integer> A) {
