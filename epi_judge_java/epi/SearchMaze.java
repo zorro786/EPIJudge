@@ -5,6 +5,7 @@ import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 public class SearchMaze {
   @EpiUserType(ctorParams = {int.class, int.class})
@@ -40,8 +41,37 @@ public class SearchMaze {
   public static List<Coordinate> searchMaze(List<List<Color>> maze,
                                             Coordinate s, Coordinate e) {
     // TODO - you fill in here.
-    return Collections.emptyList();
+    int m = maze.size(), n = maze.get(0).size();
+    boolean[][] visited = new boolean[m][n];
+    List<Coordinate> result = new ArrayList<>();
+    dfsSolver(s, e, result, maze, visited);
+    Collections.reverse(result);
+    return result;
   }
+
+  private static boolean dfsSolver(Coordinate current, Coordinate end, List<Coordinate> path, List<List<Color>> maze, boolean visited[][]) {
+    if (!isValidCoordinate(current, maze.size(), maze.get(0).size(), maze) || visited[current.x][current.y]) {
+      return false;
+    }
+    if (current.equals(end)) {
+      path.add(current);
+      return true;
+    }
+    visited[current.x][current.y] = true;
+    int x = current.x;
+    int y = current.y;
+    if (dfsSolver(new Coordinate(x+1, y), end, path, maze, visited) || dfsSolver(new Coordinate(x, y+1), end, path, maze, visited)
+            || dfsSolver(new Coordinate(x-1, y), end, path, maze, visited) || dfsSolver(new Coordinate(x, y-1), end, path, maze, visited)) {
+      path.add(current);
+      return true;
+    }
+    return false;
+  }
+
+  private static boolean isValidCoordinate(Coordinate c, int m, int n, List<List<Color>> maze) {
+    return c.x >= 0 && c.x < m && c.y >= 0 && c.y < n && maze.get(c.x).get(c.y).equals(Color.WHITE);
+  }
+
   public static boolean pathElementIsFeasible(List<List<Integer>> maze,
                                               Coordinate prev, Coordinate cur) {
     if (!(0 <= cur.x && cur.x < maze.size() && 0 <= cur.y &&

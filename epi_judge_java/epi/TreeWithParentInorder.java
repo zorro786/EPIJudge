@@ -1,13 +1,15 @@
 package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
+
+import java.util.ArrayList;
 import java.util.List;
 public class TreeWithParentInorder {
   @EpiTest(testDataFile = "tree_with_parent_inorder.tsv")
 
   public static List<Integer> inorderTraversal(BinaryTree<Integer> tree) {
-    // TODO - you fill in here.
-    return null;
+    List<Integer> result = new ArrayList<>();
+    return result;
   }
 
   public static void main(String[] args) {

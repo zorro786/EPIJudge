@@ -5,8 +5,18 @@ public class RemoveDuplicatesFromSortedList {
   @EpiTest(testDataFile = "remove_duplicates_from_sorted_list.tsv")
 
   public static ListNode<Integer> removeDuplicates(ListNode<Integer> L) {
-    // TODO - you fill in here.
-    return null;
+    ListNode<Integer> current = L, ptr = L;
+    while (ptr != null) {
+      if (ptr.data != current.data) {
+        current.next = ptr;
+        current = current.next;
+      }
+      ptr = ptr.next;
+    }
+    if (current != null) {
+      current.next = null;
+    }
+    return L;
   }
 
   public static void main(String[] args) {

@@ -3,8 +3,11 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 public class SmallestSubarrayCoveringSet {
 
@@ -21,8 +24,38 @@ public class SmallestSubarrayCoveringSet {
 
   public static Subarray findSmallestSubarrayCoveringSet(List<String> paragraph,
                                                          Set<String> keywords) {
-    // TODO - you fill in here.
-    return new Subarray(0, 0);
+    Map<String, Integer> map = new HashMap<>();
+    int i = 0, j=0, start = -1, end = -1;
+    int minLength = Integer.MAX_VALUE;
+    while (j < paragraph.size()) {
+      if (map.size() < keywords.size()) {
+        if (keywords.contains(paragraph.get(j))) {
+          map.merge(paragraph.get(j), 1, Integer::sum);
+        }
+        if (map.size() < keywords.size()) {
+          j++;
+        }
+      } else {
+        while (map.size() == keywords.size() && i < paragraph.size()) {
+          if (minLength > j - i + 1) {
+            minLength = j - i + 1;
+            start = i;
+            end = j;
+          }
+          if (map.containsKey(paragraph.get(i))) {
+            Integer val = map.get(paragraph.get(i));
+            if (val == 1) {
+              map.remove(paragraph.get(i));
+            } else {
+              map.put(paragraph.get(i), val - 1);
+            }
+          }
+          i++;
+        }
+        j++;
+      }
+    }
+    return new Subarray(start, end);
   }
   @EpiTest(testDataFile = "smallest_subarray_covering_set.tsv")
   public static int findSmallestSubarrayCoveringSetWrapper(

@@ -16,8 +16,26 @@ public class LongestIncreasingSubarray {
   }
 
   public static Subarray findLongestIncreasingSubarray(List<Integer> A) {
-    // TODO - you fill in here.
-    return new Subarray(0, 0);
+    if (A.size() == 1) {
+      return new Subarray(0, 0);
+    }
+    int res = 0;
+    Subarray subarray = new Subarray(0,0);
+    int i = 0, j = i + 1;
+    while (i < A.size()) {
+      if (j < A.size() && A.get(j-1) < A.get(j)) {
+        j++;
+      } else {
+        if (j-i > res) {
+          subarray.start = i;
+          subarray.end = j-1;
+          res = j-i;
+        }
+        i = j;
+        j = i + 1;
+      }
+    }
+    return subarray;
   }
   @EpiTest(testDataFile = "longest_increasing_subarray.tsv")
   public static int findLongestIncreasingSubarrayWrapper(List<Integer> A) {

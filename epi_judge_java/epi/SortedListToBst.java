@@ -3,17 +3,35 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 public class SortedListToBst {
+  private static DoublyListNode<Integer> head;
   // Returns the root of the corresponding BST. The prev and next fields of the
   // list nodes are used as the BST nodes left and right fields, respectively.
   // The length of the list is given.
   public static DoublyListNode<Integer>
   buildBSTFromSortedList(DoublyListNode<Integer> l, int length) {
-    // TODO - you fill in here.
-    return null;
+    head = l;
+    return buildBSTFromSortedListHelper(length);
+
   }
+
+  public static DoublyListNode<Integer>
+  buildBSTFromSortedListHelper(int length) {
+    if (length == 0) {
+      return null;
+    }
+    DoublyListNode<Integer> left = buildBSTFromSortedListHelper(length/2);
+    DoublyListNode<Integer> root = head;
+    root.prev = left;
+    head = head.next;
+    root.next = buildBSTFromSortedListHelper(length - length/2 - 1);
+    return root;
+  }
+
   public static void compareVectorAndTree(DoublyListNode<Integer> tree,
                                           Iterator<Integer> it)
       throws TestFailure {

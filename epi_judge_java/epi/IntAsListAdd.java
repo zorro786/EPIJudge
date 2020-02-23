@@ -6,8 +6,33 @@ public class IntAsListAdd {
 
   public static ListNode<Integer> addTwoNumbers(ListNode<Integer> L1,
                                                 ListNode<Integer> L2) {
-    // TODO - you fill in here.
-    return null;
+    if (L1 == null) {
+      return L2;
+    } else if (L2 == null) {
+      return L1;
+    }
+    ListNode<Integer> dummy = new ListNode<>(null, null);
+
+    ListNode<Integer> head1 = L1, head2 = L2, ptr = dummy;
+    int carry = 0;
+    while (head1 != null || head2 != null || carry != 0) {
+      int sum = carry;
+      if (head1 != null) {
+        sum += head1.data;
+        head1 = head1.next;
+      }
+      if (head2 != null) {
+        sum += head2.data;
+        head2 = head2.next;
+      }
+      carry = sum/10;
+      sum %= 10;
+      ptr.next = new ListNode(sum, null);
+      ptr = ptr.next;
+    }
+
+    return dummy.next;
+
   }
 
   public static void main(String[] args) {

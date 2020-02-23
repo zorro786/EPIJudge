@@ -5,8 +5,20 @@ public class IsTreeSymmetric {
   @EpiTest(testDataFile = "is_tree_symmetric.tsv")
 
   public static boolean isSymmetric(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return true;
+    if (tree == null) {
+      return true;
+    }
+    return isSymmetricHelper(tree.left, tree.right);
+  }
+
+  private static boolean isSymmetricHelper(BinaryTreeNode<Integer> leftR, BinaryTreeNode<Integer> rightR) {
+    if (leftR == rightR) {
+      return true;
+    }
+    if (leftR == null || rightR == null) {
+      return false;
+    }
+    return leftR.data.equals(rightR.data) && isSymmetricHelper(leftR.left, rightR.right) && isSymmetricHelper(leftR.right, rightR.left);
   }
 
   public static void main(String[] args) {

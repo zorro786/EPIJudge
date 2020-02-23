@@ -47,9 +47,30 @@ public class SearchForMissingElement {
 
   @EpiTest(testDataFile = "find_missing_and_duplicate.tsv")
 
-  public static DuplicateAndMissing findDuplicateMissing(List<Integer> A) {
-    // TODO - you fill in here.
-    return new DuplicateAndMissing(0, 0);
+  public static DuplicateAndMissing findDuplicateMissing(List<Integer> a) {
+      int n = a.size();
+      int xor = 0;
+      for (int i = 0; i < n; i++) {
+        xor ^= i;
+        xor ^= a.get(i);
+      }
+      int setBit = ~(xor-1) & xor;
+      int res = 0;
+      for (int i = 0; i < n; i++){
+          if ((a.get(i)&setBit) != 0) {
+            res ^= a.get(i);
+          }
+          if ((i&setBit) != 0) {
+            res ^= i;
+          }
+      }
+      for (int num : a) {
+        if (num == res) {
+          return new DuplicateAndMissing(res, res^xor);
+        }
+      }
+
+    return new DuplicateAndMissing(res^xor, res);
   }
 
   public static void main(String[] args) {

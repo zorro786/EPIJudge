@@ -4,6 +4,8 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
 import epi.test_framework.TimedExecutor;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,10 +44,15 @@ public class GroupEqualEntries {
       return result;
     }
   }
+
   public static void groupByAge(List<Person> people) {
-    // TODO - you fill in here.
-    return;
+    HashMap<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < people.size(); i++) {
+      map.merge(people.get(i).age, 1, Integer::sum);
+    }
+
   }
+
   private static Map<Person, Integer> buildMultiset(List<Person> people) {
     Map<Person, Integer> m = new HashMap<>();
     for (Person p : people) {

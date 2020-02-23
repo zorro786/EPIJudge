@@ -8,9 +8,24 @@ import java.util.Collections;
 import java.util.List;
 public class IntervalsUnion {
 
-  public static class Interval {
+  public static class Interval implements Comparable<Interval> {
     public Endpoint left = new Endpoint();
     public Endpoint right = new Endpoint();
+
+    @Override
+    public int compareTo(Interval o) {
+      if (left.val != o.left.val) {
+        return Integer.compare(left.val, o.left.val);
+      } else {
+        if (left.isClosed && !o.left.isClosed) {
+          return -1;
+        } else if (!left.isClosed && o.left.isClosed) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    }
 
     private static class Endpoint {
       public boolean isClosed;
@@ -19,8 +34,27 @@ public class IntervalsUnion {
   }
 
   public static List<Interval> unionOfIntervals(List<Interval> intervals) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    Collections.sort(intervals);
+    Interval current = null;
+    List<Interval> res = new ArrayList<>();
+    for (Interval interval : intervals) {
+      if (current == null || current.right.val < interval.left.val || (current.right.val == interval.left.val && !current.right.isClosed && !interval.left.isClosed)) {
+        if (current != null) {
+          res.add(current);
+        }
+        current = interval;
+      } else {
+        if (interval.right.val > current.right.val) {
+          current.right = interval.right;
+        } else if (interval.right.val == current.right.val) {
+          current.right.isClosed = current.right.isClosed || interval.right.isClosed;
+        }
+      }
+    }
+    if (current != null) {
+      res.add(current);
+    }
+    return res;
   }
   @EpiUserType(
       ctorParams = {int.class, boolean.class, int.class, boolean.class})

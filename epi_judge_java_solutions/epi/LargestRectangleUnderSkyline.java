@@ -4,6 +4,7 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 
 import java.util.ArrayDeque;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 
@@ -37,10 +38,12 @@ public class LargestRectangleUnderSkyline {
   }
 
   public static void main(String[] args) {
-    System.exit(
-        GenericTest
-            .runFromAnnotations(args, "LargestRectangleUnderSkyline.java",
-                                new Object() {}.getClass().getEnclosingClass())
-            .ordinal());
+    List<Integer> test = Arrays.asList(1,3,2,4,5,6,5,3,1,2);
+    System.out.println(calculateLargestRectangle(test));
+//    System.exit(
+//        GenericTest
+//            .runFromAnnotations(args, "LargestRectangleUnderSkyline.java",
+//                                new Object() {}.getClass().getEnclosingClass())
+//            .ordinal());
   }
 }

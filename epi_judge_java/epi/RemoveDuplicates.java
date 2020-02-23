@@ -6,10 +6,10 @@ import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.function.BiPredicate;
 public class RemoveDuplicates {
   @EpiUserType(ctorParams = {String.class, String.class})
-  //@include
   public static class Name implements Comparable<Name> {
     String firstName;
     String lastName;
@@ -45,10 +45,21 @@ public class RemoveDuplicates {
       return lastName.compareTo(name.lastName);
     }
   }
+
   public static void eliminateDuplicate(List<Name> names) {
-    // TODO - you fill in here.
-    return;
+    Collections.sort(names);
+    ListIterator<Name> it = names.listIterator(1);
+    Name prev = names.get(0);
+    while (it.hasNext()) {
+      Name next = it.next();
+      if (prev.firstName.equals(next.firstName)) {
+        it.remove();
+      }
+      prev = next;
+    }
   }
+
+
   @EpiTest(testDataFile = "remove_duplicates.tsv")
   public static List<Name> eliminateDuplicateWrapper(List<Name> names) {
     eliminateDuplicate(names);

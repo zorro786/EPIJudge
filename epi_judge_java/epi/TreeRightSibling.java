@@ -14,8 +14,21 @@ public class TreeRightSibling {
   }
 
   public static void constructRightSibling(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return;
+    BinaryTreeNode<Integer> prev = null, cur = tree;
+    while (cur != null) {
+      BinaryTreeNode<Integer> next = cur.left;
+      BinaryTreeNode<Integer> forPrev = cur;
+      while (prev != null) {
+        cur.next = prev.left;
+        prev.left.next = prev.right;
+        prev = prev.next;
+        while (cur.next != null) {
+          cur = cur.next;
+        }
+      }
+      prev = forPrev;
+      cur = next;
+    }
   }
   private static BinaryTreeNode<Integer>
   cloneTree(BinaryTree<Integer> original) {

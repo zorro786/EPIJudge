@@ -1,24 +1,93 @@
 package epi;
+
 import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LruCache {
-  LruCache(final int capacity) {}
+  private class Node {
+    Integer price, isbn;
+    Node next, prev;
+    private Node (Integer isbn, Integer price, Node next, Node prev) {
+      this.price = price;
+      this.isbn = isbn;
+      this.next = next;
+      this.prev = prev;
+    }
+  }
+  private Map<Integer, Node> map;
+  private int capacity;
+  private int size;
+  private Node head, tail;
+
+  LruCache(final int capacity) {
+    this.capacity = capacity;
+    map = new HashMap<>();
+    head = new Node(-1, -1, null, null);
+    tail = new Node(-2, -1, null, head);
+    head.next = tail;
+    size = 0;
+  }
+
   public Integer lookup(Integer key) {
-    // TODO - you fill in here.
-    return 0;
+    if (!map.containsKey(key)) {
+      return -1;
+    }
+    Node node = map.get(key);
+    moveToFirst(key);
+    return node.price;
   }
+
   public void insert(Integer key, Integer value) {
-    // TODO - you fill in here.
-    return;
+    if (map.containsKey(key)) {
+      moveToFirst(key);
+    } else {
+      if (size == capacity) {
+        evict();
+      }
+      head.next = new Node(key, value, head.next, head);
+      head.next.next.prev = head.next;
+      size++;
+      map.put(key, head.next);
+    }
   }
+
+  private void moveToFirst(Integer key) {
+    Node node = map.get(key);
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    node.next = head.next;
+    node.prev = head;
+    head.next = node;
+    head.next.next.prev = node;
+  }
+
+  private void evict() {
+    if (size > 0) {
+      tail.prev.prev.next = tail;
+      map.remove(tail.prev.isbn);
+      tail.prev = tail.prev.prev;
+      size--;
+    }
+  }
+
   public Boolean erase(Object key) {
-    // TODO - you fill in here.
+    if (!map.containsKey(key)) {
+      return false;
+    }
+    Node node = map.get(key);
+    node.prev.next = node.next;
+    node.next.prev = node.prev;
+    size--;
+    map.remove(key);
     return true;
   }
+
   @EpiUserType(ctorParams = {String.class, int.class, int.class})
   public static class Op {
     String code;

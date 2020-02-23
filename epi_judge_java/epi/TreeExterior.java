@@ -10,8 +10,54 @@ public class TreeExterior {
 
   public static List<BinaryTreeNode<Integer>>
   exteriorBinaryTree(BinaryTreeNode<Integer> tree) {
-    // TODO - you fill in here.
-    return Collections.emptyList();
+    List<BinaryTreeNode<Integer>> result = new ArrayList<>();
+    if (tree == null) {
+      return result;
+    }
+    result.add(tree);
+    BinaryTreeNode<Integer> current = tree.left;
+    while (current != null) {
+      if (current.left == null && current.right == null) {
+        break;
+      }
+      result.add(current);
+      if (current.left != null) {
+        current = current.left;
+      } else {
+        current = current.right;
+      }
+    }
+    addLeaves(tree, result);
+    current = tree.right;
+    List<BinaryTreeNode<Integer>> rightmost = new ArrayList<>();
+    while (current != null) {
+      if (current.left == null && current.right == null) {
+        break;
+      }
+      rightmost.add(current);
+      if (current.right != null) {
+        current = current.right;
+      } else {
+        current = current.left;
+      }
+    }
+    Collections.reverse(rightmost);
+    result.addAll(rightmost);
+    return result;
+  }
+
+  private static void addLeaves(BinaryTreeNode<Integer> tree, List<BinaryTreeNode<Integer>> result) {
+    if (tree == null) {
+      return;
+    }
+    if (tree.left == null && tree.right == null) {
+      if (result.get(result.size() - 1) != tree) {
+        result.add(tree);
+      }
+      return;
+    }
+    addLeaves(tree.left, result);
+    addLeaves(tree.right, result);
   }
   private static List<Integer> createOutputList(List<BinaryTreeNode<Integer>> L)
       throws TestFailure {

@@ -42,8 +42,8 @@ public class IntervalAdd {
 
   public static List<Interval> addInterval(List<Interval> disjointIntervals,
                                            Interval newInterval) {
-    // TODO - you fill in here.
-    return null;
+    List<Interval> res = new ArrayList<>();
+    return res;
   }
 
   public static void main(String[] args) {

@@ -3,27 +3,65 @@ import epi.test_framework.EpiTest;
 import epi.test_framework.EpiUserType;
 import epi.test_framework.GenericTest;
 import epi.test_framework.TestFailure;
+
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
+
 public class CircularQueue {
 
   public static class Queue {
-    public Queue(int capacity) {}
+
+    private int head, tail;
+    private int size;
+    private int capacity;
+    Integer[] q;
+
+    public Queue(int capacity) {
+      assert(capacity > 0);
+      q = new Integer[capacity];
+      this.capacity = capacity;
+    }
+
     public void enqueue(Integer x) {
-      // TODO - you fill in here.
-      return;
+      if (size == capacity) {
+        resize();
+      }
+      q[tail] = x;
+      tail = (tail + 1)%capacity;
+      size++;
     }
+
     public Integer dequeue() {
-      // TODO - you fill in here.
-      return 0;
+      if (size == 0) {
+        throw new NoSuchElementException("");
+      }
+      Integer toRemove = q[head];
+      q[head] = null;
+      head = (head + 1)%capacity;
+      size--;
+      return toRemove;
     }
+
+    private void resize() {
+      Integer[] resized = new Integer[capacity*2];
+      System.arraycopy(q, head, resized, 0, capacity - head);
+      if (head > 0) {
+        System.arraycopy(q, 0, resized, capacity - head, head);
+      }
+      q = resized;
+      head = 0;
+      tail = size;
+      capacity = capacity*2;
+    }
+
     public int size() {
-      // TODO - you fill in here.
-      return 0;
+      return size;
     }
+
     @Override
     public String toString() {
-      // TODO - you fill in here.
-      return super.toString();
+      return Arrays.toString(q);
     }
   }
   @EpiUserType(ctorParams = {String.class, int.class})

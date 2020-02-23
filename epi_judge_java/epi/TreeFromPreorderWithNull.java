@@ -5,10 +5,25 @@ import epi.test_framework.TimedExecutor;
 import java.util.ArrayList;
 import java.util.List;
 public class TreeFromPreorderWithNull {
+  private static Integer current;
   public static BinaryTreeNode<Integer>
   reconstructPreorder(List<Integer> preorder) {
-    // TODO - you fill in here.
-    return null;
+    current = 0;
+    return builder(preorder);
+  }
+
+  private static BinaryTreeNode<Integer> builder(List<Integer> preorder) {
+    if (current >= preorder.size()) {
+      return null;
+    }
+    if (preorder.get(current) == null){
+      current++;
+      return null;
+    }
+    BinaryTreeNode<Integer> root = new BinaryTreeNode<>(preorder.get(current++));
+    root.left = builder(preorder);
+    root.right = builder(preorder);
+    return root;
   }
   @EpiTest(testDataFile = "tree_from_preorder_with_null.tsv")
   public static BinaryTreeNode<Integer>

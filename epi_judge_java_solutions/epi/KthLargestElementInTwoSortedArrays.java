@@ -3,6 +3,7 @@ package epi;
 import epi.test_framework.EpiTest;
 import epi.test_framework.GenericTest;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class KthLargestElementInTwoSortedArrays {
@@ -39,6 +40,7 @@ public class KthLargestElementInTwoSortedArrays {
   }
 
   public static void main(String[] args) {
+    System.out.println(findKthNTwoSortedArrays(Arrays.asList(1, 3, 5), Arrays.asList(2, 3, 6), 3));
     System.exit(
         GenericTest
             .runFromAnnotations(args, "KthLargestElementInTwoSortedArrays.java",

@@ -9,8 +9,16 @@ public class LowestCommonAncestorInBst {
   // Input nodes are nonempty and the key at s is less than or equal to that at
   // b.
   public static BstNode<Integer>
-  findLCA(BstNode<Integer> tree, BstNode<Integer> s, BstNode<Integer> b) {
-    // TODO - you fill in here.
+  findLCA(BstNode<Integer> root, BstNode<Integer> a, BstNode<Integer> b) {
+    while (root != null) {
+      if (root.equals(a) || root.equals(b) || a.data < root.data && b.data > root.data) {
+        return root;
+      } else if (a.data < root.data) {
+        root = root.left;
+      } else {
+        root = root.right;
+      }
+    }
     return null;
   }
   @EpiTest(testDataFile = "lowest_common_ancestor_in_bst.tsv")

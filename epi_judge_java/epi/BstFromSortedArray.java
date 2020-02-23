@@ -10,8 +10,18 @@ public class BstFromSortedArray {
 
   public static BstNode<Integer>
   buildMinHeightBSTFromSortedArray(List<Integer> A) {
-    // TODO - you fill in here.
-    return null;
+    return buildMinHeightBSTFromSortedArrayHelper(A, 0, A.size() -1);
+  }
+
+  private static BstNode<Integer> buildMinHeightBSTFromSortedArrayHelper(List<Integer> A, int lo, int hi) {
+    if (lo > hi) {
+      return null;
+    }
+    int mid = lo + (hi-lo)/2;
+    BstNode<Integer> root = new BstNode<>(A.get(mid));
+    root.left = buildMinHeightBSTFromSortedArrayHelper(A, lo, mid-1);
+    root.right = buildMinHeightBSTFromSortedArrayHelper(A, mid + 1, hi);
+    return root;
   }
   @EpiTest(testDataFile = "bst_from_sorted_array.tsv")
   public static int
